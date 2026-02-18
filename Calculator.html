@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <link rel="stylesheet" href="Calculator.css"> 
+</head>
+<body>
+    <div class="calculator_wrapper">
+        <div class="calculator">
+            <div id="result" class="result">
+                0
+            </div>
+            <div>
+                <div>  
+                    <button id="btn_op_clear" class="my-btn secondary">C</button>    <!-- про тэг кнопки: https://www.w3schools.com/tags/tag_button.asp -->
+                    <button id="btn_op_sign" class="my-btn secondary">+/-</button>
+                    <button id="btn_op_percent" class="my-btn secondary">%</button>
+                    <button id="btn_op_div" class="my-btn primary">/</button>
+                </div>
+
+                <div>
+                    <button id="btn_digit_7" class="my-btn">7</button>
+                    <button id="btn_digit_8" class="my-btn">8</button>
+                    <button id="btn_digit_9" class="my-btn">9</button>
+                    <button id="btn_op_mult" class="my-btn primary">x</button>
+                </div>
+
+                <div>
+                    <button id="btn_digit_4" class="my-btn">4</button>
+                    <button id="btn_digit_5" class="my-btn">5</button>
+                    <button id="btn_digit_6" class="my-btn">6</button>
+                    <button id="btn_op_minus"class="my-btn primary">-</button>
+                </div>
+
+                <div>
+                    <button id="btn_digit_1" class="my-btn">1</button>
+                    <button id="btn_digit_2" class="my-btn">2</button>
+                    <button id="btn_digit_3" class="my-btn">3</button>
+                    <button id="btn_op_plus" class="my-btn primary ex">+</button>
+                </div>
+
+                <div>
+                    <button id="btn_digit_0" class="my-btn">0</button>
+                    <button id="btn_digit_dot" class="my-btn">.</button>
+                    <button id="btn_op_equal" class="my-btn primary execute">=</button>
+                </div> 
+            </div> 
+        </div>
+    
+        <p class="signature">ЛР№1 "Калькулятор" Пчелинцева Дарья<br>ИУ5-42Б</p>
+        <button id="theme_change" class="theme_btn">Сменить тему</button>
+
+        <a href="https://github.com/daria788/labs_PSP/tree/Calculator-(html/css)" target="_blank" class="github_btn">GitHub</a>
+
+        <div class="downdrop_cont">
+            <label>Выберите тему:</label>
+            <select id="theme_select" class="theme_select">
+                <option value="dark">Темная</option>
+                <option value="light">Светлая</option>
+                <option value="colorful">Цветной</option>
+            </select>   
+        </div>
+
+        <details class="author">
+            <summary>Автор</summary>
+            <p>Пчелинцева Дарья<br>ИУ5-42Б</p>
+        </details>
+    
+        <div class="purpose_box">
+            <p><strong>Цель:</strong> <mark>знакомство</mark> с инструментами построения пользовательских интерфейсов web-сайтов: <mark>HTML</mark>, <mark>CSS</mark>.</p>
+        </div>
+    </div>
+
+  <script>
+    // Обработчик для выпадающего списка
+document.getElementById('theme_select').addEventListener('change', function() {
+    // Удаляем все классы с тела
+    document.body.className = '';
+    // Добавляем выбранный класс
+    document.body.classList.add(this.value + '-mode');
+    
+    // Обновляем текст кнопки в соответствии с выбранной темой
+    const themeBtn = document.getElementById('theme_change');
+    switch(this.value) {
+        case 'light':
+            themeBtn.textContent = 'Светлая тема';
+            break;
+        case 'dark':
+            themeBtn.textContent = 'Тёмная тема';
+            break;
+        case 'colorful':
+            themeBtn.textContent = 'Цветная тема';
+            break;
+    }
+});
+
+// Обработчик для кнопки смены темы
+document.getElementById('theme_change').addEventListener('click', function() {
+    const body = document.body;
+    const select = document.getElementById('theme_select');
+    
+    // Определяем текущую тему и переключаем на следующую
+    if (body.classList.contains('light-mode')) {
+        body.className = 'dark-mode';
+        select.value = 'dark';
+        this.textContent = 'Тёмная тема';
+    } else if (body.classList.contains('dark-mode')) {
+        body.className = 'colorful-mode';
+        select.value = 'colorful';
+        this.textContent = 'Цветная тема';
+    } else if (body.classList.contains('colorful-mode')) {
+        body.className = 'light-mode';
+        select.value = 'light';
+        this.textContent = 'Светлая тема';
+    } else {
+        // Если нет класса (начальное состояние)
+        body.className = 'light-mode';
+        select.value = 'light';
+        this.textContent = 'Светлая тема';
+    }
+});
+  </script>
+</body>
+</html>
