@@ -71,55 +71,5 @@
             <p><strong>Цель:</strong> <mark>знакомство</mark> с инструментами построения пользовательских интерфейсов web-сайтов: <mark>HTML</mark>, <mark>CSS</mark>.</p>
         </div>
     </div>
-
-  <script>
-    // Обработчик для выпадающего списка
-document.getElementById('theme_select').addEventListener('change', function() {
-    // Удаляем все классы с тела
-    document.body.className = '';
-    // Добавляем выбранный класс
-    document.body.classList.add(this.value + '-mode');
-    
-    // Обновляем текст кнопки в соответствии с выбранной темой
-    const themeBtn = document.getElementById('theme_change');
-    switch(this.value) {
-        case 'light':
-            themeBtn.textContent = 'Светлая тема';
-            break;
-        case 'dark':
-            themeBtn.textContent = 'Тёмная тема';
-            break;
-        case 'colorful':
-            themeBtn.textContent = 'Цветная тема';
-            break;
-    }
-});
-
-// Обработчик для кнопки смены темы
-document.getElementById('theme_change').addEventListener('click', function() {
-    const body = document.body;
-    const select = document.getElementById('theme_select');
-    
-    // Определяем текущую тему и переключаем на следующую
-    if (body.classList.contains('light-mode')) {
-        body.className = 'dark-mode';
-        select.value = 'dark';
-        this.textContent = 'Тёмная тема';
-    } else if (body.classList.contains('dark-mode')) {
-        body.className = 'colorful-mode';
-        select.value = 'colorful';
-        this.textContent = 'Цветная тема';
-    } else if (body.classList.contains('colorful-mode')) {
-        body.className = 'light-mode';
-        select.value = 'light';
-        this.textContent = 'Светлая тема';
-    } else {
-        // Если нет класса (начальное состояние)
-        body.className = 'light-mode';
-        select.value = 'light';
-        this.textContent = 'Светлая тема';
-    }
-});
-  </script>
 </body>
 </html>
