@@ -603,6 +603,7 @@ body {
     font-weight: bold;
     text-shadow: 0 0 1.5px currentColor;
 }
+```
 
 - Блок с целью работы:
 
