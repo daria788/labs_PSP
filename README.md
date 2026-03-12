@@ -25,7 +25,7 @@
   
 - Продемонстрировать работу калькулятора в статическом режиме (визуальная часть).
 
-# *Файл калькулятора Calculator.html*
+### *Файл калькулятора Calculator.html*
 
 ```html
 <!DOCTYPE html>
@@ -103,7 +103,7 @@
 </html>
 ```
 
-# *и сss-файл Calculator.css*
+### *и сss-файл Calculator.css*
 
 - Основной фон, Светлый(rgb(255, 255, 255)), Цветной(картинка):
 ```css
@@ -277,7 +277,7 @@ body.colorful-mode{
 }
 ```
 
-# *html-файл главного меню main_page.html*
+### *html-файл главного меню main_page.html*
 
 
 ```html
@@ -328,7 +328,7 @@ body.colorful-mode{
 </body>
 </html>
 ```
-# *и сss-файл main_page.css*
+### *и сss-файл main_page.css*
 
 - Фон главной страницы:
 ```css
@@ -392,7 +392,7 @@ body {
 ```
 
 
-*html-файл о авторе about.html*
+### *html-файл о авторе about.html*
 
 
 ```html
@@ -442,7 +442,7 @@ body {
 </html>
 ```
 
-*и css-файл about.css*
+### *и css-файл about.css*
 
 - Фон страницы "О авторе":
 ```css
