@@ -114,6 +114,7 @@
 ### *и сss-файл Calculator.css*
 
 - Основной фон, Светлый(rgb(255, 255, 255)), Цветной(картинка):
+  
 ```css
 body{
     background-color: rgb(255, 255, 255);
@@ -138,6 +139,7 @@ body.colorful-mode{
 ```
 
 - Меню код:
+  
 ```css
 .wrapper {
     max-width: 1400px;
@@ -192,6 +194,7 @@ body.colorful-mode{
 ```
 
 - Основные кнопки калькулятору:
+  
 ```css
 .my-btn{
     margin-right: 5px;
@@ -255,6 +258,7 @@ body.colorful-mode{
 ```
 
 - Кнопки смена темы:
+  
 ```css
 .theme_btn{
     margin: 10px 0;
@@ -278,6 +282,7 @@ body.colorful-mode{
 ```
 
 - Кнопка "Назад":
+  
 ```css
 .btn_back {
     display: flex;
@@ -359,6 +364,7 @@ body.colorful-mode{
 ### *и сss-файл main_page.css*
 
 - Фон главной страницы:
+  
 ```css
 body {
     background-image: url('pictures/ы4.jpg');
@@ -375,6 +381,7 @@ body {
 
 
 - Меню код:
+  
 ```css
 .header {
     max-width: 1400px;
@@ -473,6 +480,7 @@ body {
 ### *и css-файл about.css*
 
 - Фон страницы "О авторе":
+  
 ```css
 body {
     background-image: url('pictures/ы4.jpg');
@@ -488,6 +496,7 @@ body {
 ```
 
 - Меню код:
+  
 ```css
 .header {
     max-width: 1400px;
@@ -529,6 +538,7 @@ body {
 ```
 
 - Блок о авторе:
+  
 ```css
 .author-block {
     background-color: rgb(203, 203, 203);
@@ -571,6 +581,7 @@ body {
 
 
 - Кнопка GitHub:
+  
 ```css
 .github_btn {
     display: inline-block;
@@ -594,6 +605,7 @@ body {
 }
 
 - Блок с целью работы:
+
 ```css
 .purpose_box {
     margin: 0;
@@ -624,6 +636,7 @@ mark {
 ```
 
 - Кнопка "Назад":
+  
 ```css
 .btn_back {
     margin-top: 10px;
@@ -1044,7 +1057,8 @@ window.onload = function(){
 
 ## Дополнительные задания (задал преподаватель)
 
-- Уменьшать размер цифры, при вводе большого числа
+- Уменьшать размер цифры, при вводе большого числа:
+  
 ```js
 function SizeLimit(){
         const value= outputElement.innerHTML;
@@ -1066,7 +1080,8 @@ function SizeLimit(){
     }
 ```
 
-- Восстанавливает размер цифры после стерки большой
+- Восстанавливает размер цифры после стерки большой:
+  
 ```js
 function UpdateSize(){
         const value= outputElement.innerHTML;
