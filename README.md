@@ -616,13 +616,10 @@ body {
 }
 
 mark {
-    background-color: rgb(239, 111, 19);
     color: rgb(0, 0, 0);
-    padding: 1px 8px;
-    border-radius: 6px;
     font-weight: bold;
-    display: inline-block;
-    margin: 0 2px;
+    font-size: 1.4rem;
+    background-color:  rgb(193, 193, 193);
 }
 ```
 
