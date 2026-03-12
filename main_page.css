@@ -1,0 +1,98 @@
+body {
+    background-image: url('picture/ы4.jpg');
+    background-size: cover;  
+    background-position: center;      /* Центрирует изображение */
+    background-repeat: no-repeat;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: rgb(44, 44, 44);
+}
+
+.wrapper {
+    max-width: 1400px;
+    margin: 40px auto;
+    background-color: rgba(255, 255, 255, 0.793);
+    border-radius: 30px;
+    padding: 40px 50px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    max-width: 1400px;
+    margin: 0 auto 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content:start;
+    backdrop-filter: blur(10px);
+    padding: 10px 25px;
+    border-radius: 5px;
+    border-bottom: 2px solid rgba(144, 144, 144, 0.3);
+}
+
+.nav-bar {
+    margin-left: 70px;
+    margin-bottom: 17px;
+    height: 40px;
+    width: 400px;
+    display: flex;
+    gap: 10px;
+    background: rgb(212, 212, 212);
+    padding: 5px;
+    border-radius: 20px;
+    border: 2px solid rgb(244, 244, 244);
+}
+
+.nav-item {
+    text-decoration: none;
+    color: rgb(44, 44, 44);
+    font-weight: 600;
+    padding: 11px 25px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+}
+
+.nav-item:hover{
+    color: rgb(239, 111, 19);
+    text-decoration:dashed;
+    text-shadow: 0 0 1px currentColor;
+}
+
+.logo {
+    height: 60px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.main {
+    margin: 30px 0;
+}
+
+.images {
+    width: 100%;
+    margin-bottom: 40px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(229, 229, 229, 0.5);
+}
+
+.img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.footer{
+    width: 100%;
+    height: 40px;
+    border-top: 2px solid rgba(144, 144, 144, 0.3);
+    text-align: center;
+}
+.footer p{
+    margin-top: 26px;
+}
