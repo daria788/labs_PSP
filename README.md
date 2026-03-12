@@ -654,7 +654,7 @@ mark {
 
 ### *и JS-файл about.css*
 
-'''js
+```js
 window.onload = function(){
     let a = ''
     let b = ''
@@ -1043,12 +1043,12 @@ window.onload = function(){
 });
 };
 
-'''
+```
 
 ## Дополнительные задания (задал преподаватель)
 
 - Уменьшать размер цифры, при вводе большого числа
-'''js
+```js
 function SizeLimit(){
         const value= outputElement.innerHTML;
         const length= value.length;
@@ -1067,14 +1067,14 @@ function SizeLimit(){
             outputElement.style.fontSize='2.2rem';
         }
     }
-'''
+```
 
 - Восстанавливает размер цифры после стерки большой
-'''js
+```js
 function UpdateSize(){
         const value= outputElement.innerHTML;
         const length= value.length;
 
         outputElement.style.fontSize='2.2rem';
     }
-'''
+```
