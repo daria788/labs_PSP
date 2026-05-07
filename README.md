@@ -1,5 +1,5 @@
-# Лабораторная работа №2
-Создание калькулятора. Функции на JavaScript.
+# Лабораторная работа №3
+Простое веб-приложение. Верстка
 
 ## Содержание <!-- omit in toc -->
 
@@ -21,7 +21,7 @@
 6. Самостоятельно адаптировать приложение под заданную тему и внедрить указанный Bootstrap-компонент.
 
 
-### *Файл index.html*
+### *Файл index.html - корневой шаблон с подключением Bootstrap, Three.js и модульного скрипта.*
 
 ```html
 <!DOCTYPE html>
@@ -55,7 +55,7 @@
 </html>
 ```
 
-### *main.js*
+### *main.js - точка входа*
   
 ```js
 import {MainPage} from "./pages/main/index.js";
@@ -65,9 +65,10 @@ const mainPage = new MainPage(root);
 mainPage.render();
 ```
 
-### *pages/main/index.js *
+### *pages/main/index.js - главная страница*
 
 - JSON-файл карточек
+  
 ```js
 this.cardsData = [
             {
@@ -91,6 +92,7 @@ this.cardsData = [
         ];
 ```
 - Рендер с фильтрацией и добавлением карточек
+  
 ```js
 const filteredData = this.filterLetter 
     ? this.getData().filter(item => item.title.toUpperCase().startsWith(this.filterLetter))
@@ -101,19 +103,36 @@ filteredData.forEach((item) => {
     productCard.render(item, this.clickCard.bind(this), this.deleteCard.bind(this));
 });
 ```
--Методы addCard и deleteCard с тостами
+- Методы addCard и deleteCard с тостами
+
 ```js
 addCard() {
-    // ...
+    if (this.cardsData.length === 0) {
+        this.showToast("Ошибка", "Нет карточек для копирования!");
+        return;
+    }
+
+    const firstCard = this.cardsData[0];
+    const newCard = {
+        id: this.nextId++,
+        src: firstCard.src,
+        title: `${firstCard.title} (копия)`,
+        text: firstCard.text
+        };
+
     this.cardsData.push(newCard);
     this.showToast("Успешно", `Добавлена новая карточка: "${newCard.title}"`);
     this.render();
 }
-
 deleteCard(cardId) {
+    const initialLength = this.cardsData.length;
     this.cardsData = this.cardsData.filter(item => item.id !== parseInt(cardId));
-    this.showToast("Удалено", `Карточка #${cardId} удалена`);
-    this.render();
+    if (this.cardsData.length < initialLength) {
+        this.showToast("Удалено", `Карточка #${cardId} удалена`);
+        this.render(); 
+    } else {
+        this.showToast("Ошибка", "Карточка не найдена!");
+    }
 }
 ```
 - Переход на страницу продукта с тостом
@@ -129,733 +148,255 @@ clickCard(cardId) {
     }
 }
 ```
-### *и сss-файл main_page.css*
+### *pages/product/index.js - страница продукта*
 
-- Фон главной страницы:
+- Данные каждой карточки:
   
-```css
-body {
-    background-image: url('pictures/ы4.jpg');
-    background-size: cover;  
-    background-position: center;      /* Центрирует изображение */
-    background-repeat: no-repeat;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    color: rgb(44, 44, 44);
-}
+```js
+getData() {
+        const data = [
+            {
+                id: 1,
+                src: "https://i.pinimg.com/1200x/24/64/d8/2464d83f87de9da30688a1e00ba89818.jpg",
+                title: "Освоение Сибири",
+                text: "Движение на восток через вечную мерзлоту и тайгу: от отряда Ермака до Транссиба. Три века пути, который превратил окраину в опору страны.",
+                modelPath: '/lab_3/models/Cottage.glb',
+                description: `
+                <strong>    Освоение Сибири (XVI–XX вв.)</strong> — это процесс включения огромных территорий от Урала до Тихого океана в состав Российского государства. 
+                Началом послужил поход Ермака в 1581–1585 гг., за которым последовало строительство сети острогов (Тюмень, Тобольск, Томск, Якутск). 
+                Основными движущими силами были казаки, поморы, беглые крестьяне и ссыльные. К середине XVII века русские вышли к Охотскому морю. 
+                
+                <strong>Освоение имело три главных последствия:</strong>
+                <ol>
+                    <li><strong>Геополитическое</strong> — Россия стала крупнейшей евразийской державой</li>
+                    <li><strong>Экономическое</strong> — началась добыча пушнины, золота, а позже — угля и нефти</li>
+                    <li><strong>Культурное</strong> — произошло взаимовлияние русских традиций и культуры коренных народов Сибири</li>
+                </ol>
+                    Освоение Сибири стало одним из ключевых факторов превращения России в трансконтинентальную державу, но сопровождалось
+                значительными человеческими, экологическими и культурными издержками, последствия которых осмысляются историками и обществом до сих пор. 
+                <br>
+                <br><strong>Результатом</strong> освоения Сибири стало превращение России в крупнейшую трансконтинентальную державу с доступом к колоссальным
+                природным ресурсам, формирование уникальной многонациональной культуры и инфраструктуры, соединившей Европу и Азию, ценой значительных человеческих,
+                экологических и культурных издержек для коренных народов региона.</br>
+            `
+            },
+            {
+                id: 2,
+                src: "https://i.pinimg.com/1200x/b0/ba/00/b0ba00dc9bfcc7d041aa84c52e151609.jpg",
+                title: "Озеро Байкал",
+                text: "Сибирское чудо света: древнейшее, глубочайшее и чистейшее озеро планеты. Священное море с хрустальным льдом и неповторимой природой.",
+                modelPath: '/lab_3/models/Waterfall.glb',
+                description: `
+                    <strong>Байкал</strong> — озеро тектонического происхождения в южной части Восточной Сибири.
+                    <br><br>
+                    <strong>Основные факты:</strong>
+                    <ul>
+                        <li>Глубина: 1642 метра (самое глубокое озеро планеты)</li>
+                        <li>Возраст: 25-35 миллионов лет</li>
+                        <li>Объём воды: 23 615 км³ (20% мировых запасов пресной воды)</li>
+                        <li>Площадь: 31 722 км²</li>
+                    </ul>
+                    В Байкал впадает более <strong>330 рек</strong>, а вытекает только одна — <strong>Ангара</strong>.
+                `
+            },
+            {
+                id: 3,
+                src: "https://company.rzd.ru/api/media/resources/200978",
+                title: "Транссибирская магистраль",
+                text: "Главная артерия Евразии: 9288 километров от Кремля до океана. Дорога, связавшая Европу и Азию, время и пространство.",
+                modelPath: 'models/train.glb',
+                description: `
+                    <strong>Транссибирская магистраль (Транссиб)</strong> — железная дорога через Евразию от Москвы до Владивостока.
+                    <br><br>
+                    <strong>Характеристики:</strong>
+                    <ul>
+                        <li>Длина: 9289 км (самая длинная железная дорога в мире)</li>
+                        <li>Строительство: 1891-1916 гг.</li>
+                        <li>Количество станций: около 200</li>
+                        <li>Время в пути: 7 суток</li>
+                    </ul>
+                    Магистраль пересекает 8 часовых поясов и связывает Европу с Азией.
+                `
+            }
+        ];
+    
+        return data.find(item => item.id === parseInt(this.id)) || data[0];
+    }
 ```
 
 
-- Меню код:
+- Кнопка назад:
   
-```css
-.header {
-    max-width: 1400px;
-    margin: 0 auto 15px auto;
-    display: flex;
-    align-items: center;
-    justify-content:start;
-    backdrop-filter: blur(10px);
-    padding: 10px 25px;
-    border-radius: 5px;
-    border-bottom: 2px solid rgba(144, 144, 144, 0.3);
-}
-
-.nav-bar {
-    margin-left: 70px;
-    margin-bottom: 17px;
-    height: 40px;
-    width: 400px;
-    display: flex;
-    gap: 10px;
-    background: rgb(212, 212, 212);
-    padding: 5px;
-    border-radius: 20px;
-    border: 2px solid rgb(244, 244, 244);
-}
-
-.nav-item {
-    text-decoration: none;
-    color: rgb(44, 44, 44);
-    font-weight: 600;
-    padding: 11px 25px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
-}
-
-.nav-item:hover{
-    color: rgb(239, 111, 19);
-    text-decoration:dashed;
-    text-shadow: 0 0 1px currentColor;
+```js
+render() {
+    ...
+    const backButton = new BackButtonComponent(this.pageRoot);
+    backButton.render(this.clickBack.bind(this));
+    ...
 }
 ```
 
 
-### *html-файл о авторе about.html*
+### *компонент Toast(всплывающие уведомления)*
 
-
-```html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О проекте - Калькулятор</title>
-    <link rel="stylesheet" href="about.css">
-</head>
-<body>
-    <div class="wrapper">
-        <div class="header">
-            <div class="logo-container">
-                <img src="https://siberians.online/images/logos/logo.svg" alt="Логотип" class="logo">
-            </div>
-
-            <div class="nav-bar">
-                <a href="main_page.html" class="nav-item">Главная</a>
-                <a href="calculator.html" class="nav-item active">Калькулятор</a>
-                <a href="about.html" class="nav-item">О авторе</a>
-            </div>
-        </div>
-        <div class="btn_back">
-            <a href="main_page.html" class="back-btn">← Назад</a>
-        </div>
-        <div class="main-content">
-            <div class="left-column">
-                <div class="author-block">
-                    <details class="author">
-                        <summary>Автор</summary>
-                        <p>Пчелинцева Дарья<br>ИУ5-42Б</p>
-                    </details>
-                    <a href="https://github.com/daria788/labs_PSP/tree/Calculator-(html/css)" target="_blank" class="github_btn">GitHub</a>
-                </div>
-            </div>
-
-            <div class="right-column">
-                <div class="purpose_box">
-                    <p><strong>Цель:</strong> <mark>знакомство</mark> с инструментами построения пользовательских интерфейсов web-сайтов: <mark>HTML</mark>, <mark>CSS</mark>.</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</body>
-</html>
-```
-
-### *и css-файл about.css*
-
-- Фон страницы "О авторе":
-  
-```css
-body {
-    background-image: url('pictures/ы4.jpg');
-    background-size: cover;  
-    background-position: center;      /* Центрирует изображение */
-    background-repeat: no-repeat;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    color: rgb(44, 44, 44);
-}
-```
-
-- Меню код:
-  
-```css
-.header {
-    max-width: 1400px;
-    margin: 0 auto 15px auto;
-    display: flex;
-    align-items: center;
-    justify-content:start;
-    backdrop-filter: blur(10px);
-    padding: 10px 25px;
-    border-radius: 5px;
-    border-bottom: 2px solid rgba(144, 144, 144, 0.3);
-}
-.nav-bar {
-    margin-left: 70px;
-    margin-bottom: 17px;
-    height: 40px;
-    width: 400px;
-    display: flex;
-    gap: 10px;
-    background: rgb(212, 212, 212);
-    padding: 5px;
-    border-radius: 20px;
-    border: 2px solid rgb(244, 244, 244);
-}
-.nav-item {
-    text-decoration: none;
-    color: rgb(44, 44, 44);
-    font-weight: 600;
-    padding: 11px 25px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
-}
-.nav-item:hover{
-    color: rgb(239, 111, 19);
-    text-decoration:dashed;
-}
-```
-
-- Блок о авторе:
-  
-```css
-.author-block {
-    background-color: rgb(203, 203, 203);
-    border-radius: 15px;
-    padding: 25px;
-    border: 2px solid rgb(227, 226, 226);
-}
-
-.author {
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.author summary {
-    color: rgb(44, 44, 44);
-    font-size: 1.5rem;
-    cursor: pointer;
-    font-weight: 600; 
-    padding: 5px 0;
-    transition: all 0.3s ease;
-}
-
-.author summary:hover {
-    color: rgb(0, 0, 0);
-    font-weight: 800; 
-    text-shadow: 0 0 1px currentColor;
-}
-
-.author p {
-    color: rgb(44, 44, 44);
-    font-weight: 600;
-    margin-top: 15px;
-    line-height: 1.6;
-    font-size: 1.1rem;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-}
-```
-
-
-- Кнопка GitHub:
-  
-```css
-.github_btn {
-    display: inline-block;
-    margin: 10px 0 0 0;
-    padding: 12px 25px;
-    background: rgb(167, 167, 167);
-    color: rgb(44, 44, 44);
-    text-decoration: none;
-    border-radius: 8px;
-    border: 2px solid rgb(228, 227, 227);
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.github_btn:hover {
-    background: rgb(192, 192, 192);
-    border-color: rgb(239, 111, 19);
-    font-weight: bold;
-    text-shadow: 0 0 1.5px currentColor;
-}
-```
-
-- Блок с целью работы:
-
-```css
-.purpose_box {
-    margin: 0;
-    padding: 25px;
-    background: rgb(193, 193, 193);
-    border-radius: 15px;
-    border: 2px solid rgb(227, 226, 226);
-}
-
-.purpose_box p {
-    color: rgb(44, 44, 44);
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.purpose_box strong {
-    color: rgb(44, 44, 44);
-    font-size: 1.3rem;
-}
-
-mark {
-    color: rgb(0, 0, 0);
-    font-weight: bold;
-    font-size: 1.4rem;
-    background-color:  rgb(193, 193, 193);
-}
-```
-
-- Кнопка "Назад":
-  
-```css
-.btn_back {
-    margin-top: 10px;
-    padding-top: 20px;
-}
-
-.back-btn {
-    display: inline-block;
-    padding: 15px 45px;
-    background: rgb(203, 203, 203);
-    color: rgb(44, 44, 44);
-    text-decoration: none;
-    border-radius: 15px;
-    border: 2px solid rgb(227, 226, 226);
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
-.back-btn:hover {
-    background: rgb(184, 184, 184);
-    border-color: rgb(239, 111, 19);
-    text-shadow: 0 0 1px currentColor;
-}
-```
-
-### *и JS-файл about.css*
 
 ```js
-window.onload = function(){
-    let a = ''
-    let b = ''
-    let expressionResult = ''
-    let selectedOper = null
-    let memory=0;
-
-
-    const outputElement = document.getElementById("result")
-    const digitButtons = document.querySelectorAll('[id ^= "btn_digit_"]')
-
-    function UpdateSize(){
-        const value= outputElement.innerHTML;
-        const length= value.length;
-
-        outputElement.style.fontSize='2.2rem';
-    }
-    function SizeLimit(){
-        const value= outputElement.innerHTML;
-        const length= value.length;
-
-        if (length>31){
-            outputElement.innerHTML=value.slice(0,31);
-        }
-
-        if (length>23){
-            outputElement.style.fontSize='1.0rem';
-        }
-        if(length>17){
-            outputElement.style.fontSize='1.2rem';
-        }
-        else{
-            outputElement.style.fontSize='2.2rem';
-        }
-        
+export class ToastComponent{
+    constructor(parent) {
+        this.parent = parent;
     }
 
-    function onDigitButtonClicked(digit) {
-        if (!selectedOper) {
-            if (a === '') {
-                if (digit === '0' || digit === '00') {
-                    a = '0';  // При вводе нуля устанавливаем "0"
-                } else if (digit === '.') {
-                    a = '0.';  // При вводе точки с пустого числа начинаем с "0."
-                } else {
-                    a = digit;  // При вводе цифры (1-9) просто ставим её
-                }
-            }
-            else if (a === '0') {
-                if (digit === '0' || digit === '00') {
-                    a = '0';
-                    outputElement.innerHTML = a;
-                    return;
-                }else if (digit === '.') {
-                    a = '0.';  // При вводе точки после нуля получаем "0."
-                } else {
-                    a = digit;  // При вводе цифры (1-9) заменяем ноль на эту цифру
-                }
-            }else{ 
-                a += digit;
-            }
-            outputElement.innerHTML = a;
-            SizeLimit()
-        } 
-        // Если операция выбрана, работаем со вторым числом (b)
-        else {
-            if (b === '') {
-            if (digit === '0' || digit === '00') {
-                b = '0';  // При вводе нуля устанавливаем "0"
-            } else if (digit === '.') {
-                b = '0.';  // При вводе точки с пустого числа начинаем с "0."
-            } else {
-                b = digit;  // При вводе цифры (1-9) просто ставим её
-            }
-            }else if (b === '0') {
-                if (digit === '0' || digit === '00') {
-                    b = '0';
-                    outputElement.innerHTML = a;
-                    return;
-                }else if (digit === '.') {
-                    b = '0.';  // При вводе точки после нуля получаем "0."
-                }else {
-                    b = digit;  // При вводе цифры (1-9) заменяем ноль на эту цифру
-                }
-            }
-            else{ 
-                b += digit;      
-            }
-            outputElement.innerHTML = b;  
-            SizeLimit()
-        }
+    getHTML(title, message) {
+        return `
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">${title}</strong>
+                        <small class="text-muted">только что</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
-    digitButtons.forEach(button => {
-        button.onclick = function() {
-            const digitValue = button.innerHTML;
-            onDigitButtonClicked(digitValue);
-        }
-    });
-
-
-    document.getElementById("btn_op_mult").onclick = function() { 
-        if (a === '') return;
-        selectedOper = 'x';
-    }
-    document.getElementById("btn_op_plus").onclick = function() { 
-        if (a === '') return;
-        selectedOper = '+';
-    }
-    document.getElementById("btn_op_minus").onclick = function() { 
-        if (a === '') return;
-        selectedOper = '-';
-    }
-    document.getElementById("btn_op_div").onclick = function() { 
-        if (a === '') return;
-        selectedOper = '/';
-    }
-    document.getElementById("btn_op_sign").onclick = function(){
-       if(!selectedOper){
-            if(a!=''){
-                a=(+a*(-1)).toString();
-                outputElement.innerHTML = a;
-            }
-        }else{
-            if (b!=''){
-                b=(+b*(-1)).toString();
-                outputElement.innerHTML = b;
-            }
-        }   
-    }
-    document.getElementById("btn_op_percent").onclick = function(){
-       if(!selectedOper){
-            if(a!=''){
-                a=(+a/(100)).toString();
-                outputElement.innerHTML = a;
-            }
-            SizeLimit()
-        }else{
-            if (b!=''){
-                b=(+a*(b/100)).toString();
-                outputElement.innerHTML = b;
-            }
-            SizeLimit()
-        }   
-    }
-    document.getElementById("btn_digit_root").onclick = function(){
-       if(!selectedOper){
-            if(a!=''){
-                a=((+a)**0.5).toString();
-                outputElement.innerHTML = a;
-            }
-            SizeLimit()
-        }else{
-            if (b!=''){
-                b=((+b)**0.5).toString();
-                outputElement.innerHTML = b;
-            }
-            SizeLimit()
-        }   
-    }
-    document.getElementById("btn_op_quadro").onclick = function(){
-       if(!selectedOper){
-            if(a!=''){
-                a=((+a)**2).toString();
-                outputElement.innerHTML = a;
-            }
-            SizeLimit()
-        }else{
-            if (b!=''){
-                b=((+b)**2).toString();
-                outputElement.innerHTML = b;
-            }
-            SizeLimit()
-        }   
-    }
-    document.getElementById("btn_op_nul").onclick = function(){
-       if(!selectedOper){
-            if(a!=''){
-                a=(+a*1000).toString();
-                outputElement.innerHTML = a;
-            }
-            SizeLimit()
-        }else{
-            if (b!=''){
-                b=(+b*1000).toString();
-                outputElement.innerHTML = b;
-            }
-            SizeLimit()
-        }   
-    }
-    document.getElementById("btn_op_log").onclick = function(){
-        if(!selectedOper){
-            if (a!=''){
-                let num=+a;
-                if(num<=0){
-                    outputElement.innerHTML="Ошибка";
-                    return;
-                }
-                a=Math.log10(num).toString();
-                outputElement.innerHTML=a;
-            }
-            SizeLimit()
-        }else{
-            if (a!=''){
-                let num=+b;
-                if(num<=0){
-                    outputElement.innerHTML="Ошибка";
-                    return;
-                }
-                b=Math.log10(num).toString();
-                outputElement.innerHTML=b;
-            }
-            SizeLimit()
-        }
-    }
-    document.getElementById("btn_op_factorial").onclick = function(){
-        function fact(n){
-            if(n<0 || !Number.isInteger(n)) return NaN;
-            if(n==0 || n==1) return 1;
-            return n*fact(n-1);
-        }
-        if(!selectedOper){
-            if(a!=''){
-                let num=+a;
-                let result=fact(num)
-                if(isNaN(result)){
-                    outputElement.innerHTML = "Ошибка!";
-                }
-                a=result.toString();
-                outputElement.innerHTML = a;
-            }
-            SizeLimit()
-        }else{
-            if (b!=''){
-                let num=+b;
-                let result=fact(num)
-                if(isNaN(result)){
-                    outputElement.innerHTML = "Ошибка!";
-                }
-                b=result.toString();
-                outputElement.innerHTML = b;
-            }
-            SizeLimit()
-        } 
-    }
-        
-    document.getElementById("btn_op_clear").onclick = function() { 
-        a = ''
-        b = ''
-        selectedOper = ''
-        expressionResult = ''
-        outputElement.innerHTML = 0
-        UpdateSize();
-    }
-    document.getElementById("btn_digit_backspase").onclick = function(){
-        if(!selectedOper){
-            if(a!=''){
-                a=a.slice(0,-1);
-                outputElement.innerHTML=a||'0';
-            }
-            SizeLimit()
-        }else{
-            if(b!=''){
-                b=b.slice(0,-1)
-                outputElement.innerHTML=b||'0';
-            }
-            SizeLimit()
-        }
-    }
-    document.getElementById("btn_op_equal").onclick = function() { 
-        
-        if (a === '' || b === '' || !selectedOper)
-            return
-            
-        switch(selectedOper) { 
-            case 'x':
-                expressionResult = (+a) * (+b)
-                break;
-            case '+':
-                expressionResult = (+a) + (+b)
-                break;
-            case '-':
-                expressionResult = (+a) - (+b)
-                break;
-            case '/':
-                if (+b === 0) {
-                    expressionResult = 'Ошибка!';
-                    outputElement.innerHTML = 'Ошибка!';
-                    return;
-                }
-                expressionResult = (+a) / (+b)
-                break;
-            
-            default:
-                break;
-        }
-        
-        // Сохраняем результат и очищаем второе число, чтобы при новом вводе записывать значение нового числа в b
-        a = expressionResult.toString()
-        b = ''
-        selectedOper = null
-
-        // Показываем результат на экране
-        outputElement.innerHTML = a
-    }
-
-    document.getElementById("btn_digit_memory_plus").onclick = function(){
-        let num =0;
-        if(!selectedOper){
-            if(a!=''){
-                num=+a;
-                memory+=num;
-                outputElement.innerHTML=memory+'M+';
-
-                setTimeout(() => {
-                    outputElement.innerHTML = a;
-                }, 300);
-            }
-            else{
-                outputElement.innerHTML=0;
-            }
-            SizeLimit()
-        }else{
-            if(b!=''){
-                num=+b;
-                memory+=num;
-                outputElement.innerHTML=memory+'M+';
-
-                setTimeout(() => {
-                    outputElement.innerHTML = b;
-                }, 300);
-            }
-            else{
-                outputElement.innerHTML=0;
-            }
-            SizeLimit()
-        }
-    }
-    document.getElementById("btn_digit_memory_min").onclick = function(){
-        let num =0;
-        if(!selectedOper){
-            if(a!=''){
-                num=+a;
-                memory-=num;
-                outputElement.innerHTML=memory+'M-';
-
-                setTimeout(() => {
-                    outputElement.innerHTML = a;
-                }, 300);
-            }
-            else{
-                outputElement.innerHTML=0;
-            }
-            SizeLimit()
-        }else{
-            if(b!=''){
-                num=+b;
-                memory-=num;
-                outputElement.innerHTML=memory+'M-';
-
-                setTimeout(() => {
-                    outputElement.innerHTML = b;
-                }, 300);
-            }
-            else{
-                outputElement.innerHTML=0;
-            }
-            SizeLimit()
-        }
-    }
-    document.getElementById('theme_change').addEventListener('click', function() {
-    const body = document.body;
+    render(title, message) {
+            this.parent.innerHTML = '';
+            const html = this.getHTML(title, message);
+            this.parent.insertAdjacentHTML('beforeend', html);
     
-    // Определяем текущую тему и переключаем на следующую
-    if (body.classList.contains('light-mode')) {
-        body.className = 'colorful-mode';
-        this.textContent = 'Цветная тема';
-    } else if (body.classList.contains('colorful-mode')) {
-        body.className = 'light-mode';
-        this.textContent = 'Светлая тема';
-    } else {
-        // Если нет класса (начальное состояние)
-        body.className = 'light-mode';
-        this.textContent = 'Светлая тема';
-    }
-});
-};
-
+            
+            const toastElement = document.getElementById('liveToast');
+            const toast=new bootstrap.Toast(toastElement);
+            toast.show();
+        }
+}
 ```
 
 ## Дополнительные задания (задал преподаватель)
 
-- Уменьшать размер цифры, при вводе большого числа:
+- Расположить карточки не вертикально, а горизонтально:
+  
+```html
+getHTML(data) {
+        return `
+            <div class="card w-100" style="position: relative;">
+                <button class="btn btn-danger btn-sm delete-btn" 
+                        data-id="${data.id}"
+                        style="position: absolute; top: 10px; right: 10px; z-index: 10;">✕</button>
+                
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="${data.src}" class="img-fluid rounded-start h-90" 
+                             alt="${data.title}" style="min-height: 100px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body py-2 px-3">
+                            <h5 class="card-title mb-1" id="click-card-${data.id}" data-id="${data.id}" style="cursor: pointer; text-decoration: none; font-size: 1.8rem; color: #d0590f !important; font-family:'Courier New', Courier, monospace; font-weight:800;">${data.title}</h5>
+                            <p class="card-text" style="cursor: pointer; text-decoration: none; color: #353535 !important; font-size: 0.9rem; font-family:'Courier New', Courier, monospace; font-weight:600;">${data.text}</p>
+                            
+                            <hr>
+                            <small class="text-muted d-block mb-2"></small>
+                            ${this.getTasksHTML(data.id)}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+```
+
+- Встроенные задания по вариантам на карточках
+  
+Задание №1
+- Сумма квадратов элементов массива (функция sumOfSquares).
+
+```js
+sumOfSquares(arr) {
+    return arr.reduce((sum, num) => sum + num * num, 0);
+}
+...
+if (data.id === 1) {
+        const btn13 = document.getElementById(`btn-13-${data.id}`);
+        if (btn13) {
+            btn13.addEventListener("click", () => {
+                try {
+                    const input = document.getElementById(`input-13-${data.id}`).value;
+                    const arr = JSON.parse(input);
+                    const result = this.sumOfSquares(arr);
+                    document.getElementById(`result-13-${data.id}`).textContent = `✅ Результат: ${result} km^2`;
+                } catch {
+                    document.getElementById(`result-13-${data.id}`).textContent = `❌ Ошибка формата!`;
+                }
+            });
+        }
+```
+
+- Сумма и произведение элементов массива (функция getSumAndMultOfArray).
   
 ```js
-function SizeLimit(){
-        const value= outputElement.innerHTML;
-        const length= value.length;
+getSumAndMultOfArray(arr) {
+    const sum = arr.reduce((a, b) => a + b, 0);
+    const mult = arr.reduce((a, b) => a * b, 1);
+    return { sum, mult };
+}
+...
+const btn14 = document.getElementById(`btn-14-${data.id}`);
+        if (btn14) {
+            btn14.addEventListener("click", () => {
+                try {
+                    const input = document.getElementById(`input-14-${data.id}`).value;
+                    const arr = JSON.parse(input);
+                    const { sum, mult } = this.getSumAndMultOfArray(arr);
+                    document.getElementById(`result-14-${data.id}`).textContent = `✅ Σ=${sum} чел, ×=${mult}`;
+                } catch {
+                    document.getElementById(`result-14-${data.id}`).textContent = `❌ Ошибка формата!`;
+                }
+            });
+        }
+```
 
-        if (length>31){
-            outputElement.innerHTML=value.slice(0,31);
-        }
+Задание №2: задание на сравнение двух массивов (функция canGetArrayFromAnother).
 
-        if (length>23){
-            outputElement.style.fontSize='1.0rem';
-        }
-        if(length>17){
-            outputElement.style.fontSize='1.2rem';
-        }
-        else{
-            outputElement.style.fontSize='2.2rem';
+```js
+canGetArrayFromAnother(arr1, arr2) {
+        if (arr1.length !== arr2.length) return false;
+        const sorted1 = [...arr1].sort();
+        const sorted2 = [...arr2].sort();
+        return sorted1.every((val, i) => val === sorted2[i]);
+    }
+...
+if (data.id === 2) {
+        const btn29 = document.getElementById(`btn-29-${data.id}`);
+        if (btn29) {
+            btn29.addEventListener("click", () => {
+                try {
+                    const inputA = document.getElementById(`input-29a-${data.id}`).value;
+                    const inputB = document.getElementById(`input-29b-${data.id}`).value;
+                    const arr1 = JSON.parse(inputA);
+                    const arr2 = JSON.parse(inputB);
+                    const result = this.canGetArrayFromAnother(arr1, arr2);
+                    document.getElementById(`result-29-${data.id}`).innerHTML = 
+                        result ? `✅ <span class="text-success">true</span>` : `❌ <span class="text-danger">false</span>`;
+                } catch {
+                    document.getElementById(`result-29-${data.id}`).textContent = `❌ Ошибка формата!`;
+                }
+            });
         }
     }
 ```
 
-- Восстанавливает размер цифры после стерки большой:
-  
-```js
-function UpdateSize(){
-        const value= outputElement.innerHTML;
-        const length= value.length;
+Задание №3: задание на переворот массива. Список станций Транссиба разворачивается в обратном порядке при нажатии кнопки «Переставить»:
 
-        outputElement.style.fontSize='2.2rem';
-    }
-```
+```js
+btn.addEventListener("click", () => {
+    const stations = ['Москва','Ярославль','Киров','Пермь','Екатеринбург',
+                       'Омск','Новосибирск','Красноярск','Иркутск','Чита',
+                       'Хабаровск','Владивосток'];
+    const reversed = [...stations].reverse();
+    alert(`🚂 Было:\n${stations.join(' → ')}\n\n🔄 Стало:\n${reversed.join(' → ')}\n`);
+});```
